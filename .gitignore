@@ -1,0 +1,20 @@
+# Raw NSCISC public-use data: large, and covered by NSCISC's data use terms
+NSCISC_Public_Data_2021/
+data/
+
+# Application database (user accounts and patient records)
+api/*.db
+api/*.db-journal
+
+# Dependencies and build output
+node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Patient-level rows derived from the NSCISC data: create with src/data_pipeline.py
+processed/
+
+# Not published
+PROPOSAL*.pdf

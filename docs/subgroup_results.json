@@ -1,0 +1,349 @@
+{
+  "min_group": 100,
+  "all_test_patients": {
+    "n": 3369,
+    "accuracy": 0.6759,
+    "accuracy_ci": [
+      0.6592,
+      0.6925
+    ],
+    "roc_auc": 0.7442,
+    "sensitivity": 0.6296,
+    "specificity": 0.73,
+    "observed_rtw_rate": 0.5393,
+    "mean_estimate": 0.5038
+  },
+  "groups": {
+    "Sex": {
+      "Male": {
+        "n": 2709,
+        "accuracy": 0.6722,
+        "accuracy_ci": [
+          0.6541,
+          0.6884
+        ],
+        "roc_auc": 0.7391,
+        "sensitivity": 0.6272,
+        "specificity": 0.7256,
+        "observed_rtw_rate": 0.5426,
+        "mean_estimate": 0.5068
+      },
+      "Female": {
+        "n": 660,
+        "accuracy": 0.6909,
+        "accuracy_ci": [
+          0.6545,
+          0.7258
+        ],
+        "roc_auc": 0.7628,
+        "sensitivity": 0.6398,
+        "specificity": 0.7476,
+        "observed_rtw_rate": 0.5258,
+        "mean_estimate": 0.4917
+      }
+    },
+    "Age at injury": {
+      "Under 25": {
+        "n": 1279,
+        "accuracy": 0.6513,
+        "accuracy_ci": [
+          0.6231,
+          0.6771
+        ],
+        "roc_auc": 0.6841,
+        "sensitivity": 0.4411,
+        "specificity": 0.815,
+        "observed_rtw_rate": 0.4378,
+        "mean_estimate": 0.4172
+      },
+      "25 to 34": {
+        "n": 893,
+        "accuracy": 0.6562,
+        "accuracy_ci": [
+          0.6249,
+          0.6876
+        ],
+        "roc_auc": 0.7254,
+        "sensitivity": 0.5821,
+        "specificity": 0.7382,
+        "observed_rtw_rate": 0.5252,
+        "mean_estimate": 0.4869
+      },
+      "45 and over": {
+        "n": 686,
+        "accuracy": 0.7595,
+        "accuracy_ci": [
+          0.7274,
+          0.7901
+        ],
+        "roc_auc": 0.8164,
+        "sensitivity": 0.8657,
+        "specificity": 0.53,
+        "observed_rtw_rate": 0.6837,
+        "mean_estimate": 0.6489
+      },
+      "35 to 44": {
+        "n": 511,
+        "accuracy": 0.6595,
+        "accuracy_ci": [
+          0.6203,
+          0.7025
+        ],
+        "roc_auc": 0.6947,
+        "sensitivity": 0.6834,
+        "specificity": 0.6198,
+        "observed_rtw_rate": 0.6243,
+        "mean_estimate": 0.5554
+      }
+    },
+    "Education": {
+      "High school diploma": {
+        "n": 1804,
+        "accuracy": 0.6386,
+        "accuracy_ci": [
+          0.6164,
+          0.6608
+        ],
+        "roc_auc": 0.6914,
+        "sensitivity": 0.6227,
+        "specificity": 0.6571,
+        "observed_rtw_rate": 0.5377,
+        "mean_estimate": 0.5103
+      },
+      "Below high school": {
+        "n": 966,
+        "accuracy": 0.647,
+        "accuracy_ci": [
+          0.6159,
+          0.677
+        ],
+        "roc_auc": 0.655,
+        "sensitivity": 0.1639,
+        "specificity": 0.934,
+        "observed_rtw_rate": 0.3727,
+        "mean_estimate": 0.3215
+      },
+      "Above high school": {
+        "n": 579,
+        "accuracy": 0.8377,
+        "accuracy_ci": [
+          0.8083,
+          0.8687
+        ],
+        "roc_auc": 0.7645,
+        "sensitivity": 0.9873,
+        "specificity": 0.1619,
+        "observed_rtw_rate": 0.8187,
+        "mean_estimate": 0.7816
+      },
+      "Other, unclassified": {
+        "n": 20,
+        "too_few_to_score": true
+      }
+    },
+    "Level of injury": {
+      "Cervical": {
+        "n": 1836,
+        "accuracy": 0.6836,
+        "accuracy_ci": [
+          0.6623,
+          0.7059
+        ],
+        "roc_auc": 0.7486,
+        "sensitivity": 0.6155,
+        "specificity": 0.7556,
+        "observed_rtw_rate": 0.5142,
+        "mean_estimate": 0.4944
+      },
+      "Thoracic": {
+        "n": 1189,
+        "accuracy": 0.6602,
+        "accuracy_ci": [
+          0.6325,
+          0.688
+        ],
+        "roc_auc": 0.734,
+        "sensitivity": 0.6174,
+        "specificity": 0.7129,
+        "observed_rtw_rate": 0.5517,
+        "mean_estimate": 0.5014
+      },
+      "Lumbar or sacral": {
+        "n": 343,
+        "accuracy": 0.688,
+        "accuracy_ci": [
+          0.6385,
+          0.7347
+        ],
+        "roc_auc": 0.7293,
+        "sensitivity": 0.7269,
+        "specificity": 0.622,
+        "observed_rtw_rate": 0.6297,
+        "mean_estimate": 0.5625
+      },
+      "Other": {
+        "n": 1,
+        "too_few_to_score": true
+      }
+    },
+    "AIS grade": {
+      "AIS A": {
+        "n": 1650,
+        "accuracy": 0.6564,
+        "accuracy_ci": [
+          0.6339,
+          0.6788
+        ],
+        "roc_auc": 0.7294,
+        "sensitivity": 0.4957,
+        "specificity": 0.8117,
+        "observed_rtw_rate": 0.4915,
+        "mean_estimate": 0.4383
+      },
+      "AIS D": {
+        "n": 909,
+        "accuracy": 0.7272,
+        "accuracy_ci": [
+          0.6975,
+          0.7569
+        ],
+        "roc_auc": 0.7769,
+        "sensitivity": 0.8407,
+        "specificity": 0.5172,
+        "observed_rtw_rate": 0.6491,
+        "mean_estimate": 0.6304
+      },
+      "AIS C": {
+        "n": 405,
+        "accuracy": 0.6938,
+        "accuracy_ci": [
+          0.6494,
+          0.7383
+        ],
+        "roc_auc": 0.7613,
+        "sensitivity": 0.6528,
+        "specificity": 0.7407,
+        "observed_rtw_rate": 0.5333,
+        "mean_estimate": 0.5099
+      },
+      "AIS B": {
+        "n": 404,
+        "accuracy": 0.6213,
+        "accuracy_ci": [
+          0.5743,
+          0.6658
+        ],
+        "roc_auc": 0.6524,
+        "sensitivity": 0.5226,
+        "specificity": 0.7171,
+        "observed_rtw_rate": 0.4926,
+        "mean_estimate": 0.4803
+      },
+      "AIS E": {
+        "n": 1,
+        "too_few_to_score": true
+      }
+    },
+    "ASIA motor score": {
+      "Recorded": {
+        "n": 2083,
+        "accuracy": 0.6716,
+        "accuracy_ci": [
+          0.651,
+          0.6932
+        ],
+        "roc_auc": 0.7414,
+        "sensitivity": 0.6705,
+        "specificity": 0.6736,
+        "observed_rtw_rate": 0.6294,
+        "mean_estimate": 0.5433
+      },
+      "Not recorded": {
+        "n": 1286,
+        "accuracy": 0.6827,
+        "accuracy_ci": [
+          0.6578,
+          0.7084
+        ],
+        "roc_auc": 0.7127,
+        "sensitivity": 0.5237,
+        "specificity": 0.7859,
+        "observed_rtw_rate": 0.3935,
+        "mean_estimate": 0.4398
+      }
+    },
+    "Race (not a model input)": {
+      "White": {
+        "n": 2475,
+        "accuracy": 0.6651,
+        "accuracy_ci": [
+          0.6448,
+          0.6844
+        ],
+        "roc_auc": 0.731,
+        "sensitivity": 0.6552,
+        "specificity": 0.679,
+        "observed_rtw_rate": 0.5859,
+        "mean_estimate": 0.5314
+      },
+      "Black": {
+        "n": 607,
+        "accuracy": 0.7084,
+        "accuracy_ci": [
+          0.6721,
+          0.7446
+        ],
+        "roc_auc": 0.7327,
+        "sensitivity": 0.527,
+        "specificity": 0.8279,
+        "observed_rtw_rate": 0.397,
+        "mean_estimate": 0.4259
+      },
+      "Other or unknown": {
+        "n": 287,
+        "accuracy": 0.7003,
+        "accuracy_ci": [
+          0.6515,
+          0.7491
+        ],
+        "roc_auc": 0.7431,
+        "sensitivity": 0.5317,
+        "specificity": 0.8323,
+        "observed_rtw_rate": 0.439,
+        "mean_estimate": 0.4303
+      }
+    },
+    "Hispanic origin (not a model input)": {
+      "Not Hispanic": {
+        "n": 3047,
+        "accuracy": 0.6734,
+        "accuracy_ci": [
+          0.6564,
+          0.6902
+        ],
+        "roc_auc": 0.7419,
+        "sensitivity": 0.6382,
+        "specificity": 0.7158,
+        "observed_rtw_rate": 0.5461,
+        "mean_estimate": 0.5108
+      },
+      "Hispanic": {
+        "n": 300,
+        "accuracy": 0.7067,
+        "accuracy_ci": [
+          0.6533,
+          0.7601
+        ],
+        "roc_auc": 0.7476,
+        "sensitivity": 0.5221,
+        "specificity": 0.8598,
+        "observed_rtw_rate": 0.4533,
+        "mean_estimate": 0.4261
+      },
+      "Unknown": {
+        "n": 22,
+        "too_few_to_score": true
+      }
+    }
+  }
+}

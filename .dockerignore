@@ -1,0 +1,21 @@
+# Keep patient-level data and local state out of the hosted image.
+NSCISC_Public_Data_2021/
+data/
+processed/
+api/*.db
+api/*.db-journal
+.git/
+docs/
+tests/
+src/
+*.pdf
+
+# The API serves XGBoost only; the comparison models are not loaded.
+models/*random_forest.joblib
+models/*logistic_regression.joblib
+
+node_modules/
+frontend/dist/
+__pycache__/
+.pytest_cache/
+*.pyc

@@ -1,0 +1,33 @@
+{
+  "machine": {
+    "system": "Windows 11",
+    "processor": "AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD",
+    "cpu_count": 16,
+    "python": "3.14.2"
+  },
+  "startup_ms": 3461,
+  "predict": {
+    "n": 300,
+    "median_ms": 29.5,
+    "p95_ms": 36.9,
+    "max_ms": 97.5
+  },
+  "predict_and_save": {
+    "n": 200,
+    "median_ms": 38.9,
+    "p95_ms": 47.6,
+    "max_ms": 87.8
+  },
+  "history_page_of_50": {
+    "n": 20,
+    "median_ms": 18.8,
+    "p95_ms": 22.9,
+    "max_ms": 27.2
+  },
+  "history_all_200": {
+    "n": 20,
+    "median_ms": 47.7,
+    "p95_ms": 72.2,
+    "max_ms": 78.3
+  }
+}

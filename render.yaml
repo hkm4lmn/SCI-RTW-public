@@ -1,0 +1,13 @@
+# Render blueprint: hosts the whole system as one free web service built
+# from the Dockerfile. See README, "Hosting it online".
+services:
+  - type: web
+    name: sci-rtw-predictor
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # Render generates a random administrator password on first deploy;
+      # read it from the service's Environment page. Username is "admin".
+      - key: SCI_RTW_ADMIN_PASSWORD
+        generateValue: true

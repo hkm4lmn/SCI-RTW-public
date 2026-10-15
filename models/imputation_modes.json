@@ -1,0 +1,20 @@
+{
+  "numeric": {
+    "age_at_injury": 28.0,
+    "asia_motor_total_discharge": 50.0
+  },
+  "categorical": {
+    "sex": "1.0",
+    "education_level": "3.0",
+    "marital_status": "1.0",
+    "veteran_status": "0.0",
+    "injury_cause": "1.0",
+    "vertebral_injury_level": "1.0",
+    "associated_injury": "0.0",
+    "work_related_injury": "0.0",
+    "aisgrade_discharge": "A",
+    "neuro_level_discharge": "C05",
+    "injury_completeness_discharge": "4.0",
+    "pre_injury_employment_status": "1.0"
+  }
+}

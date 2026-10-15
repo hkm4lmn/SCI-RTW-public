@@ -1,0 +1,305 @@
+{
+  "logistic_regression": {
+    "metrics": {
+      "accuracy": 0.6732,
+      "precision": 0.7274,
+      "recall": 0.6302,
+      "f1_score": 0.6753,
+      "roc_auc": 0.7411,
+      "confusion_matrix": [
+        [
+          1123,
+          429
+        ],
+        [
+          672,
+          1145
+        ]
+      ]
+    },
+    "feature_importance": [
+      {
+        "feature": "marital_status_7.0",
+        "importance": 2.21574
+      },
+      {
+        "feature": "injury_completeness_discharge_3.0",
+        "importance": 1.99785
+      },
+      {
+        "feature": "pre_injury_employment_status_5.0",
+        "importance": 1.76404
+      },
+      {
+        "feature": "education_level_1.0",
+        "importance": 1.29562
+      },
+      {
+        "feature": "injury_completeness_discharge_5.0",
+        "importance": 1.19188
+      },
+      {
+        "feature": "pre_injury_employment_status_2.0",
+        "importance": 0.97207
+      },
+      {
+        "feature": "education_level_7.0",
+        "importance": 0.96076
+      },
+      {
+        "feature": "education_level_2.0",
+        "importance": 0.93558
+      },
+      {
+        "feature": "pre_injury_employment_status_10.0",
+        "importance": 0.85511
+      },
+      {
+        "feature": "education_level_6.0",
+        "importance": 0.85375
+      },
+      {
+        "feature": "neuro_level_discharge_L99",
+        "importance": 0.74635
+      },
+      {
+        "feature": "injury_completeness_discharge_6.0",
+        "importance": 0.73931
+      },
+      {
+        "feature": "neuro_level_discharge_S02",
+        "importance": 0.72665
+      },
+      {
+        "feature": "injury_cause_12.0",
+        "importance": 0.72416
+      },
+      {
+        "feature": "injury_cause_77.0",
+        "importance": 0.6829
+      },
+      {
+        "feature": "pre_injury_employment_status_4.0",
+        "importance": 0.68166
+      },
+      {
+        "feature": "associated_injury_1.0",
+        "importance": 0.67564
+      },
+      {
+        "feature": "vertebral_injury_level_0.0",
+        "importance": 0.67389
+      },
+      {
+        "feature": "neuro_level_discharge_T99",
+        "importance": 0.65157
+      },
+      {
+        "feature": "injury_cause_24.0",
+        "importance": 0.63383
+      }
+    ]
+  },
+  "random_forest": {
+    "metrics": {
+      "accuracy": 0.6708,
+      "precision": 0.7235,
+      "recall": 0.6307,
+      "f1_score": 0.6739,
+      "roc_auc": 0.7397,
+      "confusion_matrix": [
+        [
+          1114,
+          438
+        ],
+        [
+          671,
+          1146
+        ]
+      ]
+    },
+    "feature_importance": [
+      {
+        "feature": "asia_motor_total_discharge",
+        "importance": 0.10178
+      },
+      {
+        "feature": "age_at_injury",
+        "importance": 0.09115
+      },
+      {
+        "feature": "education_level_2.0",
+        "importance": 0.07098
+      },
+      {
+        "feature": "education_level_5.0",
+        "importance": 0.06742
+      },
+      {
+        "feature": "pre_injury_employment_status_1.0",
+        "importance": 0.05742
+      },
+      {
+        "feature": "education_level_1.0",
+        "importance": 0.04084
+      },
+      {
+        "feature": "aisgrade_discharge_D",
+        "importance": 0.04005
+      },
+      {
+        "feature": "injury_completeness_discharge_5.0",
+        "importance": 0.03366
+      },
+      {
+        "feature": "associated_injury_1.0",
+        "importance": 0.03214
+      },
+      {
+        "feature": "education_level_3.0",
+        "importance": 0.03172
+      },
+      {
+        "feature": "associated_injury_0.0",
+        "importance": 0.03023
+      },
+      {
+        "feature": "injury_cause_10.0",
+        "importance": 0.02758
+      },
+      {
+        "feature": "pre_injury_employment_status_7.0",
+        "importance": 0.02074
+      },
+      {
+        "feature": "education_level_6.0",
+        "importance": 0.01861
+      },
+      {
+        "feature": "vertebral_injury_level_0.0",
+        "importance": 0.01774
+      },
+      {
+        "feature": "education_level_4.0",
+        "importance": 0.01765
+      },
+      {
+        "feature": "vertebral_injury_level_1.0",
+        "importance": 0.0164
+      },
+      {
+        "feature": "aisgrade_discharge_A",
+        "importance": 0.01568
+      },
+      {
+        "feature": "pre_injury_employment_status_5.0",
+        "importance": 0.0153
+      },
+      {
+        "feature": "injury_cause_1.0",
+        "importance": 0.01186
+      }
+    ]
+  },
+  "xgboost": {
+    "metrics": {
+      "accuracy": 0.6759,
+      "precision": 0.7319,
+      "recall": 0.6296,
+      "f1_score": 0.6769,
+      "roc_auc": 0.7442,
+      "confusion_matrix": [
+        [
+          1133,
+          419
+        ],
+        [
+          673,
+          1144
+        ]
+      ]
+    },
+    "feature_importance": [
+      {
+        "feature": "education_level_3.0",
+        "importance": 0.07519
+      },
+      {
+        "feature": "education_level_2.0",
+        "importance": 0.07475
+      },
+      {
+        "feature": "pre_injury_employment_status_1.0",
+        "importance": 0.05897
+      },
+      {
+        "feature": "education_level_1.0",
+        "importance": 0.05198
+      },
+      {
+        "feature": "education_level_5.0",
+        "importance": 0.04857
+      },
+      {
+        "feature": "associated_injury_0.0",
+        "importance": 0.03943
+      },
+      {
+        "feature": "aisgrade_discharge_D",
+        "importance": 0.03361
+      },
+      {
+        "feature": "injury_completeness_discharge_5.0",
+        "importance": 0.03152
+      },
+      {
+        "feature": "vertebral_injury_level_0.0",
+        "importance": 0.02666
+      },
+      {
+        "feature": "vertebral_injury_level_1.0",
+        "importance": 0.02143
+      },
+      {
+        "feature": "injury_cause_10.0",
+        "importance": 0.02128
+      },
+      {
+        "feature": "education_level_6.0",
+        "importance": 0.01871
+      },
+      {
+        "feature": "pre_injury_employment_status_5.0",
+        "importance": 0.01842
+      },
+      {
+        "feature": "veteran_status_1.0",
+        "importance": 0.01719
+      },
+      {
+        "feature": "pre_injury_employment_status_10.0",
+        "importance": 0.01549
+      },
+      {
+        "feature": "education_level_4.0",
+        "importance": 0.01413
+      },
+      {
+        "feature": "pre_injury_employment_status_2.0",
+        "importance": 0.01356
+      },
+      {
+        "feature": "education_level_7.0",
+        "importance": 0.01301
+      },
+      {
+        "feature": "associated_injury_1.0",
+        "importance": 0.0127
+      },
+      {
+        "feature": "pre_injury_employment_status_7.0",
+        "importance": 0.01039
+      }
+    ]
+  }
+}

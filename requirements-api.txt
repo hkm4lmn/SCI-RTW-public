@@ -1,0 +1,10 @@
+# What the API needs to run (the hosted container installs only these).
+# requirements.txt is the full list, including training and figures.
+pandas==3.0.2
+numpy==2.4.4
+scikit-learn==1.8.0
+# CPU-only build: the standard Linux package also downloads GPU libraries (300 MB).
+xgboost-cpu==3.4.1
+joblib==1.5.3
+fastapi==0.141.1
+uvicorn[standard]==0.52.3
