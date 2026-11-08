@@ -80,28 +80,28 @@ Not yet run. Planned for the final weeks of the project.
 
 | Field | Value |
 |---|---|
-| Sex | Male |
-| Age at injury | 18 |
-| Highest education | High School Diploma or G.E.D. |
-| Marital status | Never Married (Single) |
+| Sex | Female |
+| Age at injury | 34 |
+| Highest education | Bachelor Degree |
+| Marital status | Married |
 | Pre-injury employment | Working (competitive labor market) |
-| Cause of injury | Auto accident |
-| Neurologic level | Lumbar L03 |
+| Cause of injury | Fall |
+| Neurologic level | Lumbar L02 |
 | AIS grade | D |
 | Injury completeness | Paraplegia, incomplete |
-| ASIA motor score | 92 |
+| ASIA motor score | 90 |
 
 **Case card B**
 
 | Field | Value |
 |---|---|
 | Sex | Female |
-| Age at injury | 28 |
-| Highest education | High School Diploma or G.E.D. |
+| Age at injury | 29 |
+| Highest education | 9th–11th grade |
 | Marital status | Divorced |
-| Pre-injury employment | Working (competitive labor market) |
-| Cause of injury | Auto accident |
-| Neurologic level | Cervical C03 |
+| Pre-injury employment | Unemployed |
+| Cause of injury | Motorcycle accident |
+| Neurologic level | Cervical C04 |
 | AIS grade | B |
 | Injury completeness | Tetraplegia, incomplete |
 | ASIA motor score | not assessed (leave blank) |

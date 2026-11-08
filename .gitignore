@@ -12,9 +12,3 @@ frontend/dist/
 __pycache__/
 .pytest_cache/
 *.pyc
-
-# Patient-level rows derived from the NSCISC data: create with src/data_pipeline.py
-processed/
-
-# Not published
-PROPOSAL*.pdf

@@ -332,20 +332,39 @@ To put it on a public address with Render (free plan):
 3. When it is live, open the service's Environment page to read the
    generated `SCI_RTW_ADMIN_PASSWORD`, then sign in as `admin`.
 
+Demo accounts for testers. `render.yaml` sets `SCI_RTW_DEMO_DATA=1`, so the
+container runs `api/seed_demo_data.py` at every start. It creates 12 invented
+patients with saved predictions and these accounts (password for all:
+`demo12345`):
+
+| Username | Role | What it shows |
+|---|---|---|
+| `dr.aisyah`, `dr.kumar` | Doctor | Patients, new predictions, history, model insights |
+| `therapist.lim` | Therapist | The same as a doctor |
+| `patient.farid`, `patient.mei` | Patient | Only their own results |
+| `dr.pending` | Doctor | Cannot sign in until the admin approves it |
+
+Testers can also register their own patient account, which works at once.
+A doctor or therapist account waits for the admin's approval.
+
 Things to know about the hosted copy:
 
 - It is reachable by anyone with the address. Use invented patients only.
+  The demo password is published here, so the demo accounts must never
+  hold real patient information.
 - On the free plan the database lives inside the container, so accounts
   and records are wiped whenever the service restarts or is redeployed.
+  The demo data comes back on every start; anything testers add does not.
 - The free plan sleeps when idle; the first visit afterwards takes about a
   minute to wake it.
-- The container holds the trained XGBoost models but none of the NSCISC
+- The container holds the deployed models (XGBoost for Layer 1, Random
+  Forest for Layer 2) but none of the NSCISC
   data.
 
 ## 9. Tests
 
 ```bash
-# API tests (no servers needed, uses a temporary database): 102 tests
+# API tests (no servers needed, uses a temporary database): 107 tests
 pip install pytest httpx
 python -m pytest tests -v
 

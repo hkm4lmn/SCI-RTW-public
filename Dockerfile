@@ -32,5 +32,7 @@ RUN mkdir -p /app/data
 
 WORKDIR /app/api
 EXPOSE 8000
-# Hosting services pass the port to listen on as $PORT.
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Hosting services pass the port to listen on as $PORT. With
+# SCI_RTW_DEMO_DATA=1 (set in render.yaml) the demo accounts, patients and
+# predictions are created first; a seeding failure never stops the API.
+CMD ["sh", "-c", "if [ \"$SCI_RTW_DEMO_DATA\" = 1 ]; then python seed_demo_data.py || echo 'Demo seeding failed; starting without demo data'; fi; exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]

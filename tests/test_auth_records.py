@@ -12,12 +12,13 @@ import os
 
 from conftest import login_headers, make_user
 
+# Invented patient (the same as RTW_LIKELY in test_api.py), not an NSCISC row.
 PATIENT_DATA = {
-    "sex": "1.0", "age_at_injury": 18, "education_level": "3.0", "marital_status": "1.0",
-    "veteran_status": "0.0", "pre_injury_employment_status": "1.0", "injury_cause": "1.0",
+    "sex": "2.0", "age_at_injury": 34, "education_level": "5.0", "marital_status": "2.0",
+    "veteran_status": "0.0", "pre_injury_employment_status": "1.0", "injury_cause": "30.0",
     "vertebral_injury_level": "1.0", "associated_injury": "0.0", "work_related_injury": "0.0",
-    "neuro_level_discharge": "L03", "aisgrade_discharge": "D",
-    "injury_completeness_discharge": "1.0", "asia_motor_total_discharge": 92,
+    "neuro_level_discharge": "L02", "aisgrade_discharge": "D",
+    "injury_completeness_discharge": "1.0", "asia_motor_total_discharge": 90,
 }
 
 
@@ -267,7 +268,7 @@ def test_tc06_saved_prediction_appears_in_history(client, doctor_headers):
     assert rec["id"] == saved["prediction_id"]
     assert rec["patient"]["patient_code"] == "HIST-1"
     assert rec["entered_by"] == "Dr Test"
-    assert rec["input"]["neuro_level_discharge"] == "L03"
+    assert rec["input"]["neuro_level_discharge"] == "L02"
     assert rec["result"]["rtw_status"] == saved["rtw_status"]
     assert rec["result"]["rtw_probability"] == saved["rtw_probability"]
     assert rec["result"]["rtw_timing_probabilities"] == saved["rtw_timing_probabilities"]

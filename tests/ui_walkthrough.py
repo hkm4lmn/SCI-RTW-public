@@ -108,17 +108,16 @@ def log_out(page):
     page.wait_for_selector(".auth-card")
 
 
-# Same two real, model-verified fixtures used in tests/test_api.py (see that
-# file's header comment for why hand-picked "plausible" patients are unsafe
-# to use as test fixtures here).
-RTW_LIKELY = dict(sex="Male", age=18, edu="High School Diploma or G.E.D.", marital="Never Married (Single)",
-                   employment="Working (competitive labor market)", cause="Auto accident",
-                   neuro="Lumbar L03", ais="D — Incomplete (motor preserved, most muscles ≥3)",
-                   complete="Paraplegia, incomplete", motor=92)
-RTW_UNLIKELY = dict(sex="Male", age=26, edu="8th grade or less", marital="Never Married (Single)",
-                     employment="Working (competitive labor market)", cause="Auto accident",
-                     neuro="Cervical C04", ais="D — Incomplete (motor preserved, most muscles ≥3)",
-                     complete="Tetraplegia, incomplete", motor=46)
+# Same two invented, model-checked patients as tests/test_api.py (see that
+# file's header comment for why each was checked against the model first).
+RTW_LIKELY = dict(sex="Female", age=34, edu="Bachelor Degree", marital="Married",
+                   employment="Working (competitive labor market)", cause="Fall",
+                   neuro="Lumbar L02", ais="D — Incomplete (motor preserved, most muscles ≥3)",
+                   complete="Paraplegia, incomplete", motor=90)
+RTW_UNLIKELY = dict(sex="Male", age=22, edu="8th grade or less", marital="Never Married (Single)",
+                     employment="Unemployed", cause="Gunshot wound",
+                     neuro="Cervical C05", ais="A — Complete (no sensory/motor in S4-S5)",
+                     complete="Tetraplegia, complete", motor=16)
 
 
 def create_profile_inline(page, code, name):

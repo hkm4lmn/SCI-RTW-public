@@ -1,0 +1,87 @@
+{
+  "layer1_xgboost": {
+    "All test patients": {
+      "n": 3369,
+      "observed_rtw_rate": 0.5393,
+      "mean_estimate": 0.5038,
+      "accuracy": 0.6759,
+      "accuracy_95ci": [
+        0.6592,
+        0.6925
+      ],
+      "roc_auc": 0.7442,
+      "majority_baseline": 0.5393
+    },
+    "Injured up to 2010": {
+      "n": 3010,
+      "observed_rtw_rate": 0.4854,
+      "mean_estimate": 0.4751,
+      "accuracy": 0.6538,
+      "accuracy_95ci": [
+        0.6379,
+        0.6694
+      ],
+      "roc_auc": 0.7075,
+      "majority_baseline": 0.4854
+    },
+    "Injured 2011 or later": {
+      "n": 359,
+      "observed_rtw_rate": 0.9916,
+      "mean_estimate": 0.7441,
+      "accuracy": 0.8607,
+      "accuracy_95ci": [
+        0.8245,
+        0.897
+      ],
+      "roc_auc": 0.7481,
+      "majority_baseline": 0.9916
+    }
+  },
+  "layer2_random_forest": {
+    "All test patients": {
+      "n": 1817,
+      "class_share": {
+        "Year 1": 0.5916,
+        "Year 5": 0.2565,
+        "By Year 10": 0.1519
+      },
+      "accuracy": 0.5575,
+      "accuracy_95ci": [
+        0.5349,
+        0.5817
+      ],
+      "f1_macro": 0.47,
+      "baseline_always_year1": 0.5916
+    },
+    "Injured up to 2010": {
+      "n": 1435,
+      "class_share": {
+        "Year 1": 0.524,
+        "Year 5": 0.2843,
+        "By Year 10": 0.1916
+      },
+      "accuracy": 0.5129,
+      "accuracy_95ci": [
+        0.4885,
+        0.538
+      ],
+      "f1_macro": 0.4603,
+      "baseline_always_year1": 0.524
+    },
+    "Injured 2011 or later": {
+      "n": 382,
+      "class_share": {
+        "Year 1": 0.8455,
+        "Year 5": 0.1518,
+        "By Year 10": 0.0026
+      },
+      "accuracy": 0.7251,
+      "accuracy_95ci": [
+        0.6806,
+        0.767
+      ],
+      "f1_macro": 0.3861,
+      "baseline_always_year1": 0.8455
+    }
+  }
+}

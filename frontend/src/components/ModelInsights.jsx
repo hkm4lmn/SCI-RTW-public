@@ -3,11 +3,19 @@ import { api } from "../api.js";
 import { describeFeature, FIELD_LABELS } from "../constants/labelMaps.js";
 import { IntervalPlot } from "./charts.jsx";
 
-const MODEL_LABELS = {
-  xgboost: "XGBoost (main)",
-  random_forest: "Random Forest (comparison)",
-  logistic_regression: "Logistic Regression (baseline)",
+const MODEL_NAMES = {
+  xgboost: "XGBoost",
+  random_forest: "Random Forest",
+  logistic_regression: "Logistic Regression",
 };
+
+// The deployed model differs per layer (XGBoost for Layer 1, Random Forest for
+// Layer 2), so the label comes from the API's active_model, not a fixed list.
+function modelLabel(name, active) {
+  if (name === active) return `${MODEL_NAMES[name]} (deployed)`;
+  if (name === "logistic_regression") return "Logistic Regression (baseline)";
+  return MODEL_NAMES[name] || name;
+}
 
 const MODEL_ORDER = ["xgboost", "random_forest", "logistic_regression"];
 
@@ -39,7 +47,7 @@ function LayerTable({ layer }) {
       <tbody>
         {MODEL_ORDER.filter((n) => models[n]).map((n) => [n, models[n]]).map(([name, m]) => (
           <tr key={name}>
-            <td>{MODEL_LABELS[name] || name}</td>
+            <td>{modelLabel(name, layer.active_model)}</td>
             <td className={name === bestAcc ? "best" : ""}>{(m[accKey] * 100).toFixed(1)}%</td>
             <td>{((isBinary ? m.precision : m.precision_macro) * 100).toFixed(1)}%</td>
             <td>{((isBinary ? m.recall : m.recall_macro) * 100).toFixed(1)}%</td>
@@ -71,7 +79,7 @@ function FeatureImportance({ features }) {
 const pct = (v) => `${(v * 100).toFixed(1)}%`;
 
 // Cross-validation, overfitting check and test-set uncertainty (proposal 3.6.1).
-function ValidationTable({ evaluation }) {
+function ValidationTable({ evaluation, active }) {
   return (
     <table className="metrics">
       <thead>
@@ -91,7 +99,7 @@ function ValidationTable({ evaluation }) {
           const ci = evaluation.test_ci[name].accuracy;
           return (
             <tr key={name}>
-              <td>{MODEL_LABELS[name] || name}</td>
+              <td>{modelLabel(name, active)}</td>
               <td>{pct(cv.mean)} ± {(cv.std * 100).toFixed(1)}</td>
               <td>{pct(tv.train_accuracy)}</td>
               <td>{pct(tv.test_accuracy)}</td>
@@ -195,7 +203,7 @@ export default function ModelInsights() {
               label: `always predicting "${evaluation.majority_baseline.always_predicts}"`,
             }}
             rows={MODEL_ORDER.filter((n) => layer.models_compared[n]).map((n) => ({
-              label: MODEL_LABELS[n],
+              label: modelLabel(n, layer.active_model),
               value: layer.models_compared[n].accuracy,
               low: evaluation.test_ci[n].accuracy[0],
               high: evaluation.test_ci[n].accuracy[1],
@@ -220,7 +228,7 @@ export default function ModelInsights() {
             overfitting check. Differences between models that fall inside the 95% interval
             are not meaningful.
           </p>
-          <ValidationTable evaluation={evaluation} />
+          <ValidationTable evaluation={evaluation} active={layer.active_model} />
         </div>
       )}
 
@@ -229,8 +237,8 @@ export default function ModelInsights() {
           <h3>What the confidence level means</h3>
           <p className="sub">
             Each prediction is labelled by how far its estimate is from 50%. This is how often
-            predictions at each level were correct on the test set, for the active model
-            ({layer.active_model}).
+            predictions at each level were correct on the test set, for the deployed model
+            ({MODEL_NAMES[layer.active_model]}).
           </p>
           <table className="metrics">
             <thead>
@@ -268,7 +276,7 @@ export default function ModelInsights() {
         <div className="panel">
           <h3>Accuracy by timing class</h3>
           <p className="sub">
-            Active model ({layer.active_model}). Recall is the share of patients in each class
+            Deployed model ({MODEL_NAMES[layer.active_model]}). Recall is the share of patients in each class
             the model identifies correctly.
           </p>
           <PerClassTable perClass={evaluation.per_class[layer.active_model]} labels={TIMING_ORDER} />
@@ -279,8 +287,9 @@ export default function ModelInsights() {
         <div className="panel">
           <h3>Most influential factors</h3>
           <p className="sub">
-            Drop in ROC-AUC when each input field is shuffled in the test set, for the active
-            model ({layer.active_model}). A larger drop means the model relies on that field more.
+            Drop in ROC-AUC when each input field is shuffled in the test set, measured with{" "}
+            {MODEL_NAMES[layer.factor_model || layer.active_model]} so that both layers are ranked the
+            same way. A larger drop means the model relies on that field more.
             These are statistical associations, not causes.
           </p>
           <FactorImportance factors={evaluation.factor_importance} />
@@ -289,7 +298,7 @@ export default function ModelInsights() {
 
       <div className="panel">
         <h3>Feature importance</h3>
-        <p className="sub">Top individual encoded features inside the active model ({layer.active_model}).</p>
+        <p className="sub">Top individual encoded features inside the deployed model ({MODEL_NAMES[layer.active_model]}).</p>
         <FeatureImportance features={layer.top_features} />
       </div>
     </div>

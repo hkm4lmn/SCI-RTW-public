@@ -103,9 +103,16 @@ layer1_preprocessor = joblib.load(f"{MODEL_DIR}/layer1_preprocessor.joblib")
 layer1_model = xgb.Booster()
 layer1_model.load_model(f"{MODEL_DIR}/layer1_xgboost.json")
 
+# Layer 2 serves the Random Forest, not XGBoost: on the held-out timing test
+# set it was significantly more accurate (55.8% against 54.1%, McNemar
+# p = 0.017, docs/test_report.md section 6.11), and accuracy is the
+# proposal's primary metric. Layer 1 keeps XGBoost: there the three models
+# do not differ significantly, and XGBoost gives the per-patient factors.
+ACTIVE_MODELS = {"layer1": "xgboost", "layer2": "random_forest"}
+
 layer2_preprocessor = joblib.load(f"{MODEL_DIR}/layer2_preprocessor.joblib")
-layer2_model = xgb.Booster()
-layer2_model.load_model(f"{MODEL_DIR}/layer2_xgboost.json")
+layer2_model = joblib.load(f"{MODEL_DIR}/layer2_random_forest.joblib")
+layer2_model.set_params(n_jobs=1)  # one patient at a time; avoids thread start-up cost
 layer2_label_encoder = joblib.load(f"{MODEL_DIR}/layer2_label_encoder.joblib")
 
 
@@ -116,8 +123,8 @@ def model_fingerprint() -> str:
     prediction: an estimate in a patient's history can then be told apart
     from one the current models would give."""
     digest = hashlib.sha256()
-    for layer in (1, 2):
-        with open(f"{MODEL_DIR}/layer{layer}_xgboost.json", "rb") as f:
+    for path in ("layer1_xgboost.json", "layer2_random_forest.joblib"):
+        with open(f"{MODEL_DIR}/{path}", "rb") as f:
             digest.update(f.read())
     return digest.hexdigest()[:12]
 
@@ -257,8 +264,11 @@ def model_info(user: dict = Depends(require_staff)):
         ev = EVALUATION.get(key)
         return {
             "models_compared": {name: res["metrics"] for name, res in results.items()},
-            "active_model": "xgboost",
-            "top_features": results["xgboost"]["feature_importance"][:10],
+            "active_model": ACTIVE_MODELS[key],
+            # Permutation importance is measured with XGBoost in both layers,
+            # so the two factor rankings are comparable (objective a).
+            "factor_model": "xgboost",
+            "top_features": results[ACTIVE_MODELS[key]]["feature_importance"][:10],
             "evaluation": None if ev is None else {
                 "n_train": ev["n_train"],
                 "n_test": ev["n_test"],
@@ -304,8 +314,8 @@ def run_prediction(patient: PatientInput) -> dict:
     # ---- Layer 2: RTW timing (only if RTW predicted) ----
     if rtw_pred == 1:
         X2 = layer2_preprocessor.transform(X)
-        dmat2 = xgb.DMatrix(X2)
-        timing_proba = layer2_model.predict(dmat2)[0]
+        timing_proba = layer2_model.predict_proba(X2)[0]
+        result["layer2_model_used"] = ACTIVE_MODELS["layer2"]
         timing_idx = int(np.argmax(timing_proba))
         timing_label = layer2_label_encoder.inverse_transform([timing_idx])[0]
 

@@ -11,3 +11,7 @@ services:
       # read it from the service's Environment page. Username is "admin".
       - key: SCI_RTW_ADMIN_PASSWORD
         generateValue: true
+      # The free plan wipes the database on every restart, so the demo
+      # accounts (password demo12345) and records are recreated at start-up.
+      - key: SCI_RTW_DEMO_DATA
+        value: "1"

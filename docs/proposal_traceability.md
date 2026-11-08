@@ -11,7 +11,7 @@ the current ones, after the retraining in §6.8.
 |---|---|---|
 | (a) Identify which clinical and personal factors most influence return to work | Met, with a finding to state plainly | Permutation importance per input field on held-out patients (§6.2, current ranking in §6.8). Layer 1: education level, pre-injury employment status, injury completeness, associated injury, age at injury. AIS grade and motor score ranked high at first but owed most of that rank to the era the record came from (§6.7, §6.8). Figures: `docs/figures/layer1_factor_importance.png`, `layer2_factor_importance.png`. |
 | (b) Develop a prototype using two-layer predictive models | Met | Layer 1 predicts RTW or Non-RTW; Layer 2 predicts timing only when RTW is predicted (TC04, TC05). The full system: login, roles, patient profiles, saved history, printable report (§6.1). |
-| (c) Evaluate the accuracy of the two layers | Met | Layer 1 XGBoost: 67.6% accuracy, ROC-AUC 0.744, against 53.9% for always answering "RTW". Cross-validation, 95% intervals, overfitting check, calibration (§6.2), split ratios, fold counts and McNemar tests (§6.6), accuracy for each patient group (§6.9). Layer 2 XGBoost: 54.1% accuracy, below the 59.2% of always answering "Year 1"; reported as a limitation (§6.2, §6.8). |
+| (c) Evaluate the accuracy of the two layers | Met | Layer 1 XGBoost: 67.6% accuracy, ROC-AUC 0.744, against 53.9% for always answering "RTW". Cross-validation, 95% intervals, overfitting check, calibration (§6.2), split ratios, fold counts and McNemar tests (§6.6), accuracy for each patient group (§6.9). Layer 2 Random Forest (deployed, §6.11): 55.8% accuracy, significantly above XGBoost's 54.1% but still below the 59.2% of always answering "Year 1"; reported as a limitation (§6.2, §6.8, §6.11). |
 
 ## Functional requirements (proposal Table 3.7)
 
@@ -32,7 +32,7 @@ the current ones, after the retraining in §6.8.
 |---|---|---|
 | Usability | **Not yet measured** | Planned for the final weeks: `docs/usability_test_kit.md` (tasks, comprehension questions, SUS). Until then only the automated walkthrough (69 checks) shows the screens work, not that people find them easy. |
 | Reliability (evaluation shown with suitable metrics) | Met | Objective (c) above; Model Insights shows the comparison, validation and confidence levels |
-| Maintainability | Met | Data pipeline, training, figures and experiments are scripts that rerun end to end (README, "Retraining"); pinned dependency versions; 102 automated tests run on every push (`.github/workflows/tests.yml`) |
+| Maintainability | Met | Data pipeline, training, figures and experiments are scripts that rerun end to end (README, "Retraining"); pinned dependency versions; 105 automated tests run on every push (`.github/workflows/tests.yml`) |
 | Security and privacy | Met for a prototype | Hashed passwords, roles, lockout, audit log, protective headers (§6.8). The repository is private; the hosted copy holds invented patients only |
 | Performance | Met | About 40 ms for a saved prediction, under 0.1 s for the slowest of 500 (§6.10) |
 

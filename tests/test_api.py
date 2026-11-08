@@ -30,26 +30,26 @@ client.headers.update(make_user(client, "dr_api_tests", "doctor"))
 # labelMaps.js header for why); aisgrade_discharge and neuro_level_discharge
 # do not, since those source columns were never purely numeric.
 #
-# Both fixtures below are REAL patients pulled from the held-out test set
-# (not hand-picked guesses) whose model prediction was checked to be both
-# correct and confident (pred_proba 0.28 / 0.80 on the current model) before being hardcoded here
-# -- an earlier invented "older/severe" profile turned out to sit just above
-# the 0.5 threshold on the real model and made TC05 flaky. See
-# docs/test_report.md for why a plausible-sounding profile isn't a safe
-# substitute for checking an actual model output.
-RTW_LIKELY = {  # confidently-correct RTW case, pred_proba=0.797
-    "sex": "1.0", "age_at_injury": 18, "education_level": "3.0", "marital_status": "1.0",
-    "veteran_status": "0.0", "pre_injury_employment_status": "1.0", "injury_cause": "1.0",
+# Both fixtures below are INVENTED, clinically consistent patients, not rows
+# from the NSCISC data (whose terms do not allow sharing patient records, and
+# this file is in the public copy of the repository). Each was run through the
+# deployed models before being hardcoded and sits well clear of the decision
+# and confidence thresholds (0.879 and 0.114), because an earlier invented
+# profile that sat just above 0.5 made TC05 flaky (docs/test_report.md).
+# If the models are retrained, re-check that both stay "High" confidence.
+RTW_LIKELY = {  # invented: 34, degree, working, L2 AIS D after a fall; pred_proba=0.879
+    "sex": "2.0", "age_at_injury": 34, "education_level": "5.0", "marital_status": "2.0",
+    "veteran_status": "0.0", "pre_injury_employment_status": "1.0", "injury_cause": "30.0",
     "vertebral_injury_level": "1.0", "associated_injury": "0.0", "work_related_injury": "0.0",
-    "neuro_level_discharge": "L03", "aisgrade_discharge": "D",
-    "injury_completeness_discharge": "1.0", "asia_motor_total_discharge": 92,
+    "neuro_level_discharge": "L02", "aisgrade_discharge": "D",
+    "injury_completeness_discharge": "1.0", "asia_motor_total_discharge": 90,
 }
-RTW_UNLIKELY = {  # confidently-correct Non-RTW case, pred_proba=0.280
-    "sex": "1.0", "age_at_injury": 26, "education_level": "1.0", "marital_status": "1.0",
-    "veteran_status": "0.0", "pre_injury_employment_status": "1.0", "injury_cause": "1.0",
+RTW_UNLIKELY = {  # invented: 22, 8th grade, unemployed, complete C5 after a gunshot; pred_proba=0.114
+    "sex": "1.0", "age_at_injury": 22, "education_level": "1.0", "marital_status": "1.0",
+    "veteran_status": "0.0", "pre_injury_employment_status": "7.0", "injury_cause": "10.0",
     "vertebral_injury_level": "1.0", "associated_injury": "0.0", "work_related_injury": "0.0",
-    "neuro_level_discharge": "C04", "aisgrade_discharge": "D",
-    "injury_completeness_discharge": "4.0", "asia_motor_total_discharge": 46,
+    "neuro_level_discharge": "C05", "aisgrade_discharge": "A",
+    "injury_completeness_discharge": "5.0", "asia_motor_total_discharge": 16,
 }
 REQUIRED_FIELDS = ["sex", "age_at_injury", "education_level", "marital_status",
                    "pre_injury_employment_status", "injury_cause", "neuro_level_discharge",
@@ -407,3 +407,65 @@ def test_api_reproduces_reported_layer1_accuracy():
     acc = correct / len(df)
     print(f"\nAPI accuracy on {len(df)} held-out patients: {acc:.3f}")
     assert 0.60 <= acc <= 0.76, f"accuracy {acc:.3f} far from reported ~0.676"
+
+
+# ---------------- Deployed models: XGBoost for Layer 1, Random Forest for Layer 2 ----------------
+def test_deployed_models_are_reported_per_layer():
+    """Layer 2 serves the Random Forest (significantly more accurate on the
+    timing test set, test report section 6.11); Layer 1 keeps XGBoost."""
+    info = client.get("/model-info").json()
+    assert info["layer1"]["active_model"] == "xgboost"
+    assert info["layer2"]["active_model"] == "random_forest"
+    assert client.post("/predict", json=RTW_LIKELY).json()["layer2_model_used"] == "random_forest"
+
+
+@needs_processed_data
+def test_api_layer2_matches_the_random_forest():
+    """Held-out Layer 2 patients through the real HTTP path give the same
+    timing as the saved Random Forest applied the way it was trained, so the
+    API has no train/serve skew for Layer 2 either."""
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    import train_models as tm
+
+    df = pd.read_csv(os.path.join(PROCESSED_DIR, "layer2_test.csv"), dtype=str).sample(150, random_state=7)
+    direct = m.layer2_label_encoder.inverse_transform(
+        m.layer2_model.predict(m.layer2_preprocessor.transform(tm.cast_categoricals(
+            df.astype({"age_at_injury": float, "asia_motor_total_discharge": float}))[tm.FEATURE_COLS])))
+    cat_cols = [c for c in tm.CATEGORICAL_COLS]
+    compared = agree = 0
+    for (_, row), expected in zip(df.iterrows(), direct):
+        payload = {c: row[c] for c in cat_cols}
+        payload["age_at_injury"] = float(row["age_at_injury"])
+        payload["asia_motor_total_discharge"] = float(row["asia_motor_total_discharge"])
+        timing = client.post("/predict", json=payload).json()["rtw_timing"]
+        if timing is not None:  # Layer 2 only runs when Layer 1 predicts RTW
+            compared += 1
+            agree += int(timing == expected)
+    assert compared >= 50
+    assert agree == compared, f"API and Random Forest disagree on {compared - agree} of {compared} patients"
+
+
+# ----------------------------------------------------------------------------
+# Hosted demo data (api/seed_demo_data.py)
+# ----------------------------------------------------------------------------
+def test_synthetic_demo_profiles_are_valid_inputs():
+    """The hosted container has no NSCISC data, so the demo seeder falls back
+    to invented profiles. Every one must use valid codes and get a real
+    prediction, or the hosted demo would start with errors or empty pages."""
+    import seed_demo_data as seed
+    assert len(seed.SYNTHETIC_PROFILES) >= len(seed.PATIENT_NAMES)
+    for profile in seed.SYNTHETIC_PROFILES:
+        for field, value in profile.items():
+            if field in m.CATEGORY_OPTIONS:
+                assert value in m.CATEGORY_OPTIONS[field], f"{field}={value} is not a valid code"
+        r = client.post("/predict", json=profile)
+        assert r.status_code == 200, r.text
+        assert r.json()["rtw_status"] in ("RTW", "Non-RTW")
+
+
+def test_demo_seeder_uses_synthetic_profiles_without_data(monkeypatch):
+    import seed_demo_data as seed
+    monkeypatch.setattr(seed.os.path, "exists", lambda path: False)
+    inputs = seed.clinical_inputs(len(seed.PATIENT_NAMES))
+    assert len(inputs) == len(seed.PATIENT_NAMES)
+    assert all(isinstance(p["asia_motor_total_discharge"], float) for p in inputs)

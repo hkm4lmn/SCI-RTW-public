@@ -8,3 +8,5 @@ xgboost-cpu==3.4.1
 joblib==1.5.3
 fastapi==0.141.1
 uvicorn[standard]==0.52.3
+# Used by api/seed_demo_data.py, which the hosted demo runs at start-up.
+httpx==0.28.1

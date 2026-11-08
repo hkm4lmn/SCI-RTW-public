@@ -1,0 +1,206 @@
+{
+  "layer1": {
+    "model": "xgboost",
+    "metric": "roc_auc",
+    "rows": [
+      {
+        "share": 0.1,
+        "n_train": 1347,
+        "test_accuracy": {
+          "mean": 0.6524,
+          "std": 0.0067
+        },
+        "roc_auc": {
+          "mean": 0.7133,
+          "std": 0.0041
+        },
+        "train_accuracy": {
+          "mean": 0.7834,
+          "std": 0.0124
+        }
+      },
+      {
+        "share": 0.2,
+        "n_train": 2694,
+        "test_accuracy": {
+          "mean": 0.6571,
+          "std": 0.0043
+        },
+        "roc_auc": {
+          "mean": 0.7244,
+          "std": 0.002
+        },
+        "train_accuracy": {
+          "mean": 0.7405,
+          "std": 0.0065
+        }
+      },
+      {
+        "share": 0.4,
+        "n_train": 5388,
+        "test_accuracy": {
+          "mean": 0.6643,
+          "std": 0.0018
+        },
+        "roc_auc": {
+          "mean": 0.7364,
+          "std": 0.0018
+        },
+        "train_accuracy": {
+          "mean": 0.7159,
+          "std": 0.0041
+        }
+      },
+      {
+        "share": 0.6,
+        "n_train": 8083,
+        "test_accuracy": {
+          "mean": 0.6692,
+          "std": 0.002
+        },
+        "roc_auc": {
+          "mean": 0.7402,
+          "std": 0.0008
+        },
+        "train_accuracy": {
+          "mean": 0.7048,
+          "std": 0.0025
+        }
+      },
+      {
+        "share": 0.8,
+        "n_train": 10777,
+        "test_accuracy": {
+          "mean": 0.6733,
+          "std": 0.0023
+        },
+        "roc_auc": {
+          "mean": 0.7438,
+          "std": 0.0009
+        },
+        "train_accuracy": {
+          "mean": 0.6999,
+          "std": 0.0018
+        }
+      },
+      {
+        "share": 1.0,
+        "n_train": 13472,
+        "test_accuracy": {
+          "mean": 0.6759,
+          "std": 0.0
+        },
+        "roc_auc": {
+          "mean": 0.7442,
+          "std": 0.0
+        },
+        "train_accuracy": {
+          "mean": 0.6934,
+          "std": 0.0
+        }
+      }
+    ]
+  },
+  "layer2": {
+    "model": "random_forest",
+    "metric": "f1_macro",
+    "rows": [
+      {
+        "share": 0.1,
+        "n_train": 726,
+        "test_accuracy": {
+          "mean": 0.5572,
+          "std": 0.0107
+        },
+        "f1_macro": {
+          "mean": 0.4541,
+          "std": 0.0043
+        },
+        "train_accuracy": {
+          "mean": 0.8843,
+          "std": 0.016
+        }
+      },
+      {
+        "share": 0.2,
+        "n_train": 1453,
+        "test_accuracy": {
+          "mean": 0.5624,
+          "std": 0.0067
+        },
+        "f1_macro": {
+          "mean": 0.4634,
+          "std": 0.0017
+        },
+        "train_accuracy": {
+          "mean": 0.8055,
+          "std": 0.0125
+        }
+      },
+      {
+        "share": 0.4,
+        "n_train": 2906,
+        "test_accuracy": {
+          "mean": 0.5548,
+          "std": 0.0066
+        },
+        "f1_macro": {
+          "mean": 0.4631,
+          "std": 0.0043
+        },
+        "train_accuracy": {
+          "mean": 0.7357,
+          "std": 0.0073
+        }
+      },
+      {
+        "share": 0.6,
+        "n_train": 4359,
+        "test_accuracy": {
+          "mean": 0.5506,
+          "std": 0.0053
+        },
+        "f1_macro": {
+          "mean": 0.4586,
+          "std": 0.0043
+        },
+        "train_accuracy": {
+          "mean": 0.6998,
+          "std": 0.0031
+        }
+      },
+      {
+        "share": 0.8,
+        "n_train": 5812,
+        "test_accuracy": {
+          "mean": 0.5532,
+          "std": 0.0033
+        },
+        "f1_macro": {
+          "mean": 0.4637,
+          "std": 0.0018
+        },
+        "train_accuracy": {
+          "mean": 0.68,
+          "std": 0.0032
+        }
+      },
+      {
+        "share": 1.0,
+        "n_train": 7265,
+        "test_accuracy": {
+          "mean": 0.5575,
+          "std": 0.0
+        },
+        "f1_macro": {
+          "mean": 0.47,
+          "std": 0.0
+        },
+        "train_accuracy": {
+          "mean": 0.6635,
+          "std": 0.0
+        }
+      }
+    ]
+  }
+}

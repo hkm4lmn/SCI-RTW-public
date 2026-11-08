@@ -4,7 +4,8 @@ This documents what was broken, what was changed, and what was verified,
 across three rounds: an initial UI/prediction-quality pass, a deeper pass
 triggered by label-validity findings that required retraining, and a third
 round (§6) that added login, roles, a server-side database and a more
-rigorous model evaluation. **§6.8 holds the current model numbers**: the
+rigorous model evaluation. **§6.8 holds the current model numbers**, and
+§6.11 which model each layer serves: the
 models were retrained in §6.7 and again in §6.8 after data fixes, so the
 figures in §6.2, §6.5 and §6.7 are the ones before those fixes, and those
 in §3 are from round two. They are kept as history.
@@ -13,7 +14,7 @@ in §3 are from round two. They are kept as history.
 
 | Suite | Scope | Result |
 |---|---|---|
-| `tests/test_api.py` | 51 automated API tests: prediction, validation, model report, confidence level, suggested considerations (pytest) | **51 / 51 pass** |
+| `tests/test_api.py` | 54 automated API tests: prediction, validation, model report, confidence level, suggested considerations, deployed model per layer (pytest) | **54 / 54 pass** |
 | `tests/test_auth_records.py` | 36 automated tests: login, roles, user accounts, patient profiles, saved history and its paging, model version, database upgrade (pytest) | **36 / 36 pass** |
 | `tests/test_security.py` | 15 automated tests: sign-in lockout, forced change of the default password, session revocation, audit log, browser-facing headers (pytest) | **15 / 15 pass** |
 | `tests/ui_walkthrough.py` | 69 checks driving the real React UI in headless Chromium, as administrator, doctor and patient | **69 / 69 pass** |
@@ -728,3 +729,42 @@ separate answers, and add up to 100%. The page now says that the bars
 show which follow-up is most likely to be the first to find the patient
 working.
 
+
+### 6.11 Layer 2 now serves the Random Forest
+
+The proposal named XGBoost as the main model and accuracy as the primary
+metric (§3.6.1). The final comparison (§6.8, with McNemar's test from
+`src/experiment_splits.py`) gives a different answer for each layer, so
+the deployed model now differs per layer:
+
+| Layer | Deployed | Why |
+|---|---|---|
+| 1 (RTW or not) | XGBoost | The three models are not significantly different (McNemar p = 0.91–1.0). XGBoost has the highest ROC-AUC (0.744), the best Brier score (0.204), and its per-prediction contributions give the per-patient factors on the results page. |
+| 2 (timing) | **Random Forest** (was XGBoost) | Significantly more accurate than XGBoost on the timing test set: 55.8% against 54.1%, McNemar p = 0.017. Macro-F1 0.470 against 0.460. |
+
+What this does and does not change, stated plainly:
+
+- No model was retrained, so every figure in §6.8–6.10 still stands. The
+  API loads the saved `layer2_random_forest.joblib` instead of
+  `layer2_xgboost.json`.
+- Layer 2 is still weak. The Random Forest does not beat always answering
+  "Year 1" (59.2%, McNemar p = 0.012 in the baseline's favour), and it
+  overfits more than XGBoost (train − test gap 10.6 points against 5.9).
+  It finds fewer of the "By Year 10" patients (46% against 51%) and more
+  of the "Year 1" ones (70% against 67%).
+- The factor ranking for Layer 2 on Model Insights is still the one
+  measured with XGBoost, so that both layers are ranked the same way
+  (objective a). The page says so. The "Feature importance" panel shows
+  the Random Forest's own importances.
+- The model version saved with each prediction now fingerprints the
+  Layer 2 Random Forest, so predictions saved before this change show the
+  "made by an earlier version of the model" notice, which is correct: the
+  same details may now give a different timing.
+- The Docker image now includes the Layer 2 Random Forest.
+
+Checked by two new tests: `test_deployed_models_are_reported_per_layer`,
+and `test_api_layer2_matches_the_random_forest`, which pushes 150 held-out
+Layer 2 patients through the live HTTP path and finds the API's timing
+identical to the Random Forest applied as it was trained, for every
+patient Layer 1 sends to Layer 2. All 105 tests pass, and the browser
+walkthrough passes all 69 checks; screenshots 15 and 16 were retaken.

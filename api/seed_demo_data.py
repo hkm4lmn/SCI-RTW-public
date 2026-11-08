@@ -9,8 +9,13 @@ model output.
     python api/seed_demo_data.py
 
 - All names are invented. The clinical inputs are rows from the held-out
-  NSCISC test split (already de-identified public data), so the profiles
-  are realistic without describing any real, identifiable person.
+  NSCISC test split (already de-identified public data) when it is present,
+  so the profiles are realistic without describing any real, identifiable
+  person. Where it is not, as in the hosted container, invented but
+  clinically consistent profiles are used (SYNTHETIC_PROFILES).
+- The hosted container runs this at every start when SCI_RTW_DEMO_DATA=1
+  (see Dockerfile and render.yaml): the free plan's database is wiped on
+  restart, so the demo accounts and records come back each time.
 - Only adds records; anything already in the database is left as it is.
   Refuses to run a second time (it checks for the demo patient IDs), so it
   cannot create duplicates. To reseed from scratch: stop the API, delete
@@ -78,9 +83,41 @@ def must(response, expected):
     return response.json()
 
 
+# Used when the NSCISC test split is not available, as in the hosted
+# container: the data-use terms keep the processed data out of the image and
+# out of GitHub. These profiles are invented, one per name in PATIENT_NAMES,
+# and kept clinically consistent (complete injuries match their AIS grade,
+# cervical levels are tetraplegia, motor scores fit the level and grade). The
+# predictions made from them are still genuine model output.
+_P = ("sex", "age_at_injury", "education_level", "marital_status", "pre_injury_employment_status",
+      "injury_cause", "vertebral_injury_level", "associated_injury", "work_related_injury",
+      "neuro_level_discharge", "aisgrade_discharge", "injury_completeness_discharge",
+      "asia_motor_total_discharge")
+SYNTHETIC_PROFILES = [dict(zip(_P, values), veteran_status="0.0") for values in [
+    # sex  age  educ   marital emp     cause   vert   assoc  work   level  AIS  complete motor
+    ("1.0", 24, "3.0", "1.0", "1.0", "2.0", "1.0", "1.0", "0.0", "T10", "A", "2.0", 50),
+    ("2.0", 31, "5.0", "2.0", "1.0", "1.0", "1.0", "0.0", "0.0", "C06", "C", "4.0", 48),
+    ("1.0", 42, "3.0", "2.0", "1.0", "30.0", "1.0", "0.0", "1.0", "L01", "D", "1.0", 86),
+    ("2.0", 19, "3.0", "1.0", "6.0", "1.0", "1.0", "1.0", "0.0", "C05", "A", "5.0", 14),
+    ("1.0", 55, "4.0", "2.0", "1.0", "30.0", "0.0", "0.0", "0.0", "C04", "D", "4.0", 78),
+    ("2.0", 27, "6.0", "1.0", "1.0", "1.0", "1.0", "0.0", "0.0", "T04", "B", "1.0", 54),
+    ("1.0", 35, "5.0", "2.0", "1.0", "20.0", "1.0", "0.0", "0.0", "C05", "A", "5.0", 18),
+    ("1.0", 22, "2.0", "1.0", "7.0", "10.0", "0.0", "0.0", "0.0", "T08", "A", "2.0", 50),
+    ("2.0", 46, "5.0", "2.0", "1.0", "1.0", "1.0", "1.0", "0.0", "T12", "C", "1.0", 64),
+    ("2.0", 38, "4.0", "3.0", "1.0", "30.0", "1.0", "0.0", "1.0", "L02", "D", "1.0", 90),
+    ("1.0", 61, "1.0", "2.0", "9.0", "30.0", "0.0", "0.0", "0.0", "C03", "D", "4.0", 72),
+    ("2.0", 29, "5.0", "1.0", "1.0", "2.0", "1.0", "1.0", "0.0", "T06", "A", "2.0", 50),
+]]
+
+
 def clinical_inputs(n):
-    """n real rows from the held-out test split, as /predict payloads."""
+    """n /predict payloads: real rows from the held-out test split when it is
+    available, otherwise the invented SYNTHETIC_PROFILES."""
     path = os.path.join(API_DIR, "..", "processed", "layer1_test.csv")
+    if not os.path.exists(path):
+        return [dict(p, age_at_injury=float(p["age_at_injury"]),
+                     asia_motor_total_discharge=float(p["asia_motor_total_discharge"]))
+                for p in SYNTHETIC_PROFILES[:n]]
     rows = pd.read_csv(path, dtype=str).sample(n, random_state=11)
     payloads = []
     for _, row in rows.iterrows():
@@ -122,8 +159,11 @@ def main():
     first_new_assessment = conn.execute("SELECT COALESCE(MAX(id), 0) + 1 FROM assessments").fetchone()[0]
     conn.close()
     if clash:
-        sys.exit(f"{db.db_path()} already contains the demo patients ({codes[0]} to {codes[-1]}); "
-                 "nothing was changed. Delete the file first if you want to reseed.")
+        # Exit code 0: the hosted container runs this at every start, and a
+        # database that already has the demo data is not an error there.
+        print(f"{db.db_path()} already contains the demo patients ({codes[0]} to {codes[-1]}); "
+              "nothing was changed. Delete the file first if you want to reseed.")
+        return
 
     # Accounts are written straight to the database, so seeding works whatever
     # the administrator's password is and before it has been changed.

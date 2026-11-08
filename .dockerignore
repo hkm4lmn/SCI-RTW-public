@@ -10,8 +10,10 @@ tests/
 src/
 *.pdf
 
-# The API serves XGBoost only; the comparison models are not loaded.
-models/*random_forest.joblib
+# The API serves XGBoost for Layer 1 and the Random Forest for Layer 2;
+# the other comparison models are not loaded.
+models/layer1_random_forest.joblib
+models/layer2_xgboost.json
 models/*logistic_regression.joblib
 
 node_modules/
