@@ -15,8 +15,7 @@ PUBLIC_URL="${PUBLIC_URL:-https://github.com/hkm4lmn/SCI-RTW-public.git}"
 EXCLUDE=(
   "processed"                                            # patient-level rows derived from NSCISC
   "PROPOSAL CSP600 HAKIM AL-AMIN 2025197013.pdf"         # personal document
-  # Report files: their figures still show screenshots taken with an NSCISC
-  # test patient. Remove these lines once the figures are refreshed.
+  # Report files: kept private by choice (they carry the student's name and ID).
   "docs/FYP Report - Combined.docx"
   "docs/FYP Report - Combined.pdf"
   "docs/Chapter 4 - Results and Discussion.docx"

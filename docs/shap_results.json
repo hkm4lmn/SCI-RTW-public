@@ -1,0 +1,120 @@
+{
+  "model": "Layer 1 XGBoost (deployed)",
+  "method": "XGBoost TreeSHAP (pred_contribs), one-hot columns summed by input field",
+  "units": "log-odds of RTW",
+  "n_test_patients": 3369,
+  "base_value_log_odds": 0.001,
+  "additivity_max_error": 3.1317322282120585e-06,
+  "mean_abs_shap_by_field": {
+    "education_level": 0.3497,
+    "pre_injury_employment_status": 0.211,
+    "injury_completeness_discharge": 0.151,
+    "injury_cause": 0.1395,
+    "asia_motor_total_discharge": 0.1294,
+    "associated_injury": 0.1162,
+    "aisgrade_discharge": 0.1035,
+    "age_at_injury": 0.0938,
+    "neuro_level_discharge": 0.0665,
+    "vertebral_injury_level": 0.0605,
+    "work_related_injury": 0.0406,
+    "marital_status": 0.0387,
+    "sex": 0.03,
+    "veteran_status": 0.0109
+  },
+  "rank_shap": [
+    "education_level",
+    "pre_injury_employment_status",
+    "injury_completeness_discharge",
+    "injury_cause",
+    "asia_motor_total_discharge",
+    "associated_injury",
+    "aisgrade_discharge",
+    "age_at_injury",
+    "neuro_level_discharge",
+    "vertebral_injury_level",
+    "work_related_injury",
+    "marital_status",
+    "sex",
+    "veteran_status"
+  ],
+  "rank_permutation_importance": [
+    "education_level",
+    "pre_injury_employment_status",
+    "injury_completeness_discharge",
+    "associated_injury",
+    "age_at_injury",
+    "injury_cause",
+    "asia_motor_total_discharge",
+    "aisgrade_discharge",
+    "vertebral_injury_level",
+    "neuro_level_discharge",
+    "marital_status",
+    "veteran_status",
+    "sex",
+    "work_related_injury"
+  ],
+  "spearman_rank_correlation_shap_vs_permutation": 0.916,
+  "numeric_value_vs_shap_spearman": {
+    "age_at_injury": 0.491,
+    "asia_motor_total_discharge": 0.728
+  },
+  "mean_shap_by_band": {
+    "age_at_injury": {
+      "under 25": {
+        "n": 1279,
+        "mean_shap": -0.054
+      },
+      "25-44": {
+        "n": 1404,
+        "mean_shap": -0.02
+      },
+      "45-59": {
+        "n": 498,
+        "mean_shap": 0.183
+      },
+      "60+": {
+        "n": 188,
+        "mean_shap": -0.019
+      }
+    },
+    "asia_motor_total_discharge": {
+      "0-25": {
+        "n": 660,
+        "mean_shap": -0.156
+      },
+      "26-50": {
+        "n": 1267,
+        "mean_shap": -0.063
+      },
+      "51-75": {
+        "n": 704,
+        "mean_shap": -0.002
+      },
+      "76-100": {
+        "n": 738,
+        "mean_shap": 0.267
+      }
+    }
+  },
+  "example_patient": {
+    "description": "Invented example: female, 34, bachelor's degree, married, working before injury, fall, L2, AIS D, motor score 90",
+    "predicted_rtw_probability": 0.879,
+    "base_value_log_odds": 0.001,
+    "shap_by_field": {
+      "education_level": 0.9145,
+      "asia_motor_total_discharge": 0.5399,
+      "aisgrade_discharge": 0.2688,
+      "pre_injury_employment_status": 0.1982,
+      "injury_completeness_discharge": 0.1382,
+      "sex": -0.1169,
+      "neuro_level_discharge": 0.0729,
+      "associated_injury": -0.0591,
+      "injury_cause": 0.0406,
+      "work_related_injury": 0.028,
+      "vertebral_injury_level": -0.0252,
+      "age_at_injury": -0.0072,
+      "marital_status": -0.0056,
+      "veteran_status": -0.0053
+    }
+  }
+}
